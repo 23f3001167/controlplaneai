@@ -17,11 +17,12 @@ services:
         value: '*'
 
   # 2. React Frontend Static Site
-  - type: static
+  - type: web
     name: controlplane-frontend
+    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishDir: dist
     envVars:
       - key: VITE_API_BASE_URL
         value: ${controlplane-backend.url}/api/v1
