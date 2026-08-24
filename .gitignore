@@ -1,0 +1,39 @@
+# Environment config secrets
+.env
+backend/.env
+frontend/.env
+
+# Local Databases (SQLite)
+*.db
+backend/*.db
+test_controlplane.db
+test_controlplane.db-journal
+
+# Python dependencies & environments
+.venv/
+venv/
+backend/venv/
+__pycache__/
+backend/app/**/__pycache__/
+*.pyc
+
+# Node dependencies & frontend builds
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+build/
+frontend/build/
+
+# Testing & logs
+.pytest_cache/
+coverage/
+*.log
+logs/
+backend/logs/
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
