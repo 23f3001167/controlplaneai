@@ -29,6 +29,13 @@ else:
     DATABASE_URL = os.getenv("DATABASE_URL")
     if not DATABASE_URL:
         raise RuntimeError("CRITICAL CONFIGURATION ERROR: DATABASE_URL environment variable is missing!")
+    
+    # Auto-adjust Render's postgres:// and standard postgresql:// prefixes to async postgresql+psycopg://
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+    elif DATABASE_URL.startswith("postgresql://"):
+        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
 
 # Setup async engine. Connect arguments for check_same_thread apply only to SQLite
 engine = create_async_engine(
@@ -36,6 +43,7 @@ engine = create_async_engine(
     connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {},
     echo=False
 )
+
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,
