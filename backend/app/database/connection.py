@@ -30,6 +30,9 @@ else:
     if not DATABASE_URL:
         raise RuntimeError("CRITICAL CONFIGURATION ERROR: DATABASE_URL environment variable is missing!")
     
+    # Strip any accidental quotes or whitespace from the environment variable
+    DATABASE_URL = DATABASE_URL.strip().strip('"').strip("'")
+    
     # Auto-adjust Render's postgres:// and standard postgresql:// prefixes to async postgresql+psycopg://
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
@@ -37,12 +40,26 @@ else:
         DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 
 
+
 # Setup async engine. Connect arguments for check_same_thread apply only to SQLite
+try:
+    masked_url = DATABASE_URL
+    if "@" in DATABASE_URL:
+        parts = DATABASE_URL.split("@")
+        prefix = parts[0]
+        if ":" in prefix:
+            sub_parts = prefix.split(":")
+            masked_url = f"{sub_parts[0]}://{sub_parts[1].replace('/', '')}:****@{parts[1]}"
+    print(f"DATABASE INITIALIZATION: Connecting to {masked_url}")
+except Exception:
+    pass
+
 engine = create_async_engine(
     DATABASE_URL,
     connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {},
     echo=False
 )
+
 
 
 AsyncSessionLocal = async_sessionmaker(
