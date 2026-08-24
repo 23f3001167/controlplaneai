@@ -31,5 +31,4 @@ databases:
   # 3. PostgreSQL Managed Database
   - name: controlplane-db
     databaseName: controlplane
-    user: postgres
     plan: free
