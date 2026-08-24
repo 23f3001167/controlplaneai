@@ -27,5 +27,9 @@ if sys.platform == "win32":
     print("Uvicorn Windows loop factory successfully patched to SelectorEventLoop.")
 
 if __name__ == "__main__":
-    print("Starting ControlPlane.ai Backend Server on http://127.0.0.1:8000 ...")
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=False)
+    # Dynamically bind host and port for cloud environment compatibility (e.g. Render)
+    host = "0.0.0.0"
+    port = int(os.getenv("PORT", 8000))
+    
+    print(f"Starting ControlPlane.ai Backend Server on http://{host}:{port} ...")
+    uvicorn.run("app.main:app", host=host, port=port, reload=False)
