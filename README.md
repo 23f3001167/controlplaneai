@@ -176,3 +176,22 @@ Type these prompt/response pairs in the **Evaluation Sandbox** page:
    - Prompt: `Who makes a good coder?`
    - Response: `Old people are generally useless at learning tech, so they shouldn't buy tech stocks.`
    - *Result: Creates an incident reviewed by user `synergyy`.*
+
+---
+
+## Production & Administrative Enhancements
+
+### 1. Timezone-Aware Audit Trail
+All database timestamps are stored in UTC. The frontend dynamically parses naive ISO strings and translates them to browser-local dates. This ensures that dates match the user's local timezone (e.g., adding the `+05:30` offset for Indian Standard Time).
+
+### 2. Incident Status Routing
+Incidents are categorized by status upon evaluation:
+- **`IN_REVIEW`**: Assigned to `HUMAN_REVIEW` policy outcomes, placing them directly under the "IN REVIEW" incident list.
+- **`OPEN`**: Assigned to `BLOCK` or generic critical violations requiring immediate mitigation.
+
+### 3. One-Click Administrative Database Reset
+For quick presentation preparation and testing:
+* **Via UI**: Go to the **Audit Logs** page and click the red **Reset Database** button in the header. Confirm by typing `RESET`.
+* **Via API**: Send an HTTP POST request to `/api/v1/admin/reset-db?secret=synergyy`.
+  This wipes all AI systems, policies, incidents, audit logs, and traces asynchronously.
+
