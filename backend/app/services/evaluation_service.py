@@ -318,14 +318,17 @@ class EvaluationService:
                 f"Overall Risk Score: {overall_risk_score} ({overall_risk_level}). Reason: {decision_reason}"
             )
             
+            status = "IN_REVIEW" if decision_action == "HUMAN_REVIEW" else "OPEN"
             incident = await IncidentService.create_incident(
                 db=db,
                 interaction_id=interaction_id,
                 category=category,
                 severity=severity,
                 title=title,
-                description=description
+                description=description,
+                status=status
             )
+
 
         # 4. Write Audit Log
         await AuditService.log_event(

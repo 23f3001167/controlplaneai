@@ -17,7 +17,8 @@ class IncidentService:
         category: str,
         severity: str,
         title: str,
-        description: str
+        description: str,
+        status: str = "OPEN"
     ) -> Incident:
         """
         Creates and persists an incident ticket.
@@ -29,8 +30,9 @@ class IncidentService:
             severity=severity,
             title=title,
             description=description,
-            status="OPEN"
+            status=status
         )
+
         db.add(incident)
         await db.commit()
         await db.refresh(incident)

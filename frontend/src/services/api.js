@@ -111,6 +111,12 @@ export const generateSystemResponse = async (systemId, prompt) => {
   return response.data;
 };
 
+export const resetDatabase = async () => {
+  const response = await apiClient.post('/admin/reset-db?secret=synergyy');
+  return response.data;
+};
+
+
 export default {
   getDashboardStats,
   getAISystems,
@@ -132,5 +138,7 @@ export default {
   getAuditLogs,
   getAgentTrace,
   generateSystemResponse,
+  resetDatabase,
 };
+
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getAuditLogs } from '../services/api';
+import { getAuditLogs, resetDatabase } from '../services/api';
+
 import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
 import { 
@@ -36,7 +37,26 @@ export default function AuditLogs() {
     'HUMAN_REVIEW_COMPLETED'
   ];
 
+  const handleResetDatabase = async () => {
+    if (window.confirm("Warning: This will delete all database logs, AI systems, and policies. This cannot be undone.")) {
+      const confirmInput = window.prompt("Type 'RESET' to confirm:");
+      if (confirmInput === 'RESET') {
+        try {
+          setLoading(true);
+          await resetDatabase();
+          alert('Database reset completed successfully. Starting with a clean slate!');
+          await fetchLogs();
+        } catch (err) {
+          alert('Failed to reset database: ' + (err.response?.data?.detail || err.message));
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+  };
+
   const fetchLogs = async () => {
+
     try {
       setLoading(true);
       const params = {};
@@ -69,10 +89,19 @@ export default function AuditLogs() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h2 className="text-xl font-bold text-gray-100">Immutable Audit Logs</h2>
-        <p className="text-xs text-gray-400 mt-1">Immutable trace records documenting AI configurations, threshold alterations, and override histories.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-gray-100">Immutable Audit Logs</h2>
+          <p className="text-xs text-gray-400 mt-1">Immutable trace records documenting AI configurations, threshold alterations, and override histories.</p>
+        </div>
+        <button
+          onClick={handleResetDatabase}
+          className="bg-rose-600/10 hover:bg-rose-600 border border-rose-500/20 hover:border-rose-500 text-rose-400 hover:text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0"
+        >
+          Reset Database
+        </button>
       </div>
+
 
       {/* Filter panel */}
       <div className="bg-darkCard border border-darkBorder rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">

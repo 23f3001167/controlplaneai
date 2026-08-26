@@ -26,8 +26,10 @@ from backend.app.api import (
     audit_logs,
     interactions,
     interventions,
-    agent_traces
+    agent_traces,
+    admin
 )
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -100,3 +102,5 @@ app.include_router(interventions.router, prefix="/api/v1/interventions", tags=["
 app.include_router(audit_logs.router, prefix="/api/v1/audit-logs", tags=["Audit Logs"])
 app.include_router(agent_traces.router, prefix="/api/v1/agent-traces", tags=["Agent Traces"])
 app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["Dashboard"])
+app.include_router(admin.router, prefix="/api/v1/admin", tags=["Admin Operations"])
+
