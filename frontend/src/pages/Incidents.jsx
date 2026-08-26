@@ -256,8 +256,9 @@ export default function Incidents() {
                     </span>
                   </td>
                   <td className="p-4 text-center text-gray-400 font-mono">
-                    {new Date(inc.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    {new Date(inc.created_at.endsWith('Z') ? inc.created_at : inc.created_at + 'Z').toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </td>
+
                   <td className="p-4 text-right">
                     <button 
                       onClick={() => handleViewDetails(inc.id)}
@@ -365,8 +366,9 @@ export default function Incidents() {
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-gray-200 text-xs">{item.reviewer}</span>
                           <span className="text-[10px] text-gray-500 font-mono">
-                            {new Date(item.created_at).toLocaleString()}
+                            {new Date(item.created_at.endsWith('Z') ? item.created_at : item.created_at + 'Z').toLocaleString()}
                           </span>
+
                         </div>
                         <p className="text-[11px] text-gray-400 font-medium">Outcome Action: <span className="text-emerald-400 font-bold">{item.action}</span></p>
                         <p className="text-[11px] text-gray-500 italic mt-1">"{item.reason}"</p>

@@ -188,8 +188,9 @@ export default function Overview() {
                         <DecisionBadge action={item.decision} />
                       </td>
                       <td className="py-3 text-right text-gray-500">
-                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(item.timestamp.endsWith('Z') ? item.timestamp : item.timestamp + 'Z').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </td>
+
                     </tr>
                   ))
                 )}
@@ -250,8 +251,9 @@ export default function Overview() {
                         </span>
                       </td>
                       <td className="py-3 text-right text-gray-500">
-                        {new Date(inc.timestamp).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                        {new Date(inc.timestamp.endsWith('Z') ? inc.timestamp : inc.timestamp + 'Z').toLocaleDateString([], { month: 'short', day: 'numeric' })}
                       </td>
+
                     </tr>
                   ))
                 )}

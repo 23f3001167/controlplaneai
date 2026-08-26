@@ -30,12 +30,13 @@ export default function Policies() {
   // Form fields
   const [name, setName] = useState('');
   const [aiSystemId, setAiSystemId] = useState('');
-  const [riskThreshold, setRiskThreshold] = useState(40);
-  const [humanReviewThreshold, setHumanReviewThreshold] = useState(70);
-  const [blockThreshold, setBlockThreshold] = useState(90);
-  const [privacyThreshold, setPrivacyThreshold] = useState(70);
-  const [biasThreshold, setBiasThreshold] = useState(70);
+  const [riskThreshold, setRiskThreshold] = useState(0);
+  const [humanReviewThreshold, setHumanReviewThreshold] = useState(0);
+  const [blockThreshold, setBlockThreshold] = useState(0);
+  const [privacyThreshold, setPrivacyThreshold] = useState(0);
+  const [biasThreshold, setBiasThreshold] = useState(0);
   const [formError, setFormError] = useState('');
+
 
   const fetchInitialData = async () => {
     try {
@@ -158,14 +159,15 @@ export default function Policies() {
     if (systems.length > 0) {
       setAiSystemId(systems[0].id);
     }
-    setRiskThreshold(40);
-    setHumanReviewThreshold(70);
-    setBlockThreshold(90);
-    setPrivacyThreshold(70);
-    setBiasThreshold(70);
+    setRiskThreshold(0);
+    setHumanReviewThreshold(0);
+    setBlockThreshold(0);
+    setPrivacyThreshold(0);
+    setBiasThreshold(0);
     setFormError('');
     setCurrentPolicy(null);
   };
+
 
   return (
     <div className="space-y-6">

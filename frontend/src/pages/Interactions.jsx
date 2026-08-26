@@ -137,8 +137,9 @@ export default function Interactions() {
                     <span className="text-gray-300 font-mono font-bold">{Math.round(item.confidence * 100)}%</span>
                   </td>
                   <td className="p-4 text-center text-gray-500 font-mono">
-                    {new Date(item.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    {new Date(item.created_at.endsWith('Z') ? item.created_at : item.created_at + 'Z').toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </td>
+
                   <td className="p-4 text-right">
                     <button 
                       onClick={() => handleViewDetails(item.id)}

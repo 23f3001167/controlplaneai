@@ -140,8 +140,9 @@ export default function AuditLogs() {
                       <td className="p-4 text-gray-300 font-medium">{log.action}</td>
                       <td className="p-4 font-mono text-gray-500">{log.resource.substring(0, 18)}...</td>
                       <td className="p-4 text-center text-gray-400 font-mono">
-                        {new Date(log.created_at).toLocaleString()}
+                        {new Date(log.created_at.endsWith('Z') ? log.created_at : log.created_at + 'Z').toLocaleString()}
                       </td>
+
                       <td className="p-4 text-right">
                         <button 
                           onClick={() => toggleExpand(log.id)}
