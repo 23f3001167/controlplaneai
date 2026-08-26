@@ -113,6 +113,9 @@ async def update_policy(
             detail=f"Logical inconsistency: risk_threshold ({r_t}) must be <= human_review_threshold ({h_t}) <= block_threshold ({b_t})."
         )
 
+    # Cache system name before commit/refresh expires the loaded relationship
+    system_name = policy.ai_system.name if policy.ai_system else "Unknown"
+
     for key, value in update_data.items():
         setattr(policy, key, value)
 
@@ -121,7 +124,6 @@ async def update_policy(
     await db.refresh(policy)
 
     # Log audit
-    system_name = policy.ai_system.name if policy.ai_system else "Unknown"
     await AuditService.log_event(
         db=db,
         event_type="POLICY_UPDATED",
@@ -134,6 +136,7 @@ async def update_policy(
     resp = PolicyResponse.model_validate(policy)
     resp.ai_system_name = system_name
     return resp
+
 
 @router.delete("/{policy_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_policy(policy_id: str, db: AsyncSession = Depends(get_db)):
